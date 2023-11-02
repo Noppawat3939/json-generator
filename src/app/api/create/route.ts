@@ -15,33 +15,35 @@ export const POST = async (req: NextRequest) => {
   const userId = `/${Math.floor(Math.random() * 10)}`;
 
   try {
-    if (!_limit) {
-      const { data } = await getUserDummyJson(userId);
+    // if (!_limit) {
+    //   const { data } = await getUserDummyJson(userId);
 
-      let obj: Record<string, unknown> = {};
+    //   let obj: Record<string, unknown> = {};
 
-      Object.keys(model).forEach((key) => {
-        obj[key] = data[key as keyof typeof data];
-      });
+    //   Object.keys(model).forEach((key) => {
+    //     obj[key] = data[key as keyof typeof data];
+    //   });
 
-      return NextResponse.json({ data: obj });
+    //   return NextResponse.json({ data: obj });
+    // }
+
+    // if (_limit) {
+    const { data: users } = await getUsersDummyJson({
+      limit: _limit ?? DEFAULT_LIMIT,
+    });
+
+    console.log(users);
+
+    if (users) {
+      const mapUsers = users.users.map((user) => ({
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        age: user.age,
+      }));
+
+      return NextResponse.json({ data: mapUsers });
     }
-
-    if (_limit) {
-      const { data: users } = await getUsersDummyJson({
-        limit: _limit ?? DEFAULT_LIMIT,
-      });
-
-      if (users) {
-        const mapUsers = users.users.map((user) => ({
-          name: `${user.firstName} ${user.lastName}`,
-          email: user.email,
-          age: user.age,
-        }));
-
-        return NextResponse.json({ data: mapUsers });
-      }
-    }
+    // }
 
     return NextResponse.json(null, { status: HttpStatusCode.NotFound });
   } catch (error) {
