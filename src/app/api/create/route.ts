@@ -12,38 +12,42 @@ const DEFAULT_LIMIT = 1;
 export const POST = async (req: NextRequest) => {
   const { model, limit: _limit }: CreateRequest = await req.json();
 
-  const userId = `/${Math.floor(Math.random() * 10)}`;
+  const ranId = Math.floor(Math.random() * 10);
+
+  const userId = ranId === 0 ? 100 : ranId;
 
   try {
-    // if (!_limit) {
-    //   const { data } = await getUserDummyJson(userId);
+    if (!_limit) {
+      const { data } = await getUserDummyJson(String(userId));
 
-    //   let obj: Record<string, unknown> = {};
+      let obj: Record<string, unknown> = {};
 
-    //   Object.keys(model).forEach((key) => {
-    //     obj[key] = data[key as keyof typeof data];
-    //   });
+      Object.keys(model).forEach((key) => {
+        if (data[key as keyof typeof data]) {
+          return (obj[key] = data[key as keyof typeof data]);
+        }
 
-    //   return NextResponse.json({ data: obj });
-    // }
+        obj[key] = `mock value ${key}`;
+      });
 
-    // if (_limit) {
-    const { data: users } = await getUsersDummyJson({
-      limit: _limit ?? DEFAULT_LIMIT,
-    });
-
-    console.log(users);
-
-    if (users) {
-      const mapUsers = users.users.map((user) => ({
-        name: `${user.firstName} ${user.lastName}`,
-        email: user.email,
-        age: user.age,
-      }));
-
-      return NextResponse.json({ data: mapUsers });
+      return NextResponse.json({ data: obj });
     }
-    // }
+
+    if (_limit) {
+      const { data: users } = await getUsersDummyJson({
+        limit: _limit ?? DEFAULT_LIMIT,
+      });
+
+      if (users) {
+        const mapUsers = users.users.map((user) => ({
+          name: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          age: user.age,
+        }));
+
+        return NextResponse.json({ data: mapUsers });
+      }
+    }
 
     return NextResponse.json(null, { status: HttpStatusCode.NotFound });
   } catch (error) {
