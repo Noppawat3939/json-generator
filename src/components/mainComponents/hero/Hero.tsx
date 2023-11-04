@@ -9,7 +9,7 @@ const Hero = () => {
       className="min-h-[600px] flex flex-col gap-y-5 justify-center items-center"
     >
       <span className="flex flex-col items-center text-[3.5rem] font-bold">
-        The easiest way to create a
+        The easiest way to generate a
         <h1 className="text-[#f5a524] text-[4.5rem]">{`{JSON}`}</h1>
       </span>
       <span>
