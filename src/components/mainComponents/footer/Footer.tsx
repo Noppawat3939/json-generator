@@ -14,7 +14,7 @@ const Footer = () => {
     <footer
       about="main-footer"
       className={` ${
-        theme === "light" ? "bg-gray-900" : "bg-blend-darken"
+        theme === "light" ? "bg-gray-900" : "bg-black"
       }  flex pt-4 justify-center h-[100px] text-white mt-auto`}
     >
       <div className="flex flex-col gap-y-2 items-center">
