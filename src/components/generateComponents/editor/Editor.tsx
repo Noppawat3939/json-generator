@@ -18,10 +18,9 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import { BiPlus } from "react-icons/bi";
-import { VscJson } from "react-icons/vsc";
 import { FiRefreshCw } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
-import { useConfirmCreateJsonStore, usePreviewJsonStore } from "@/stores";
+import { usePreviewJsonStore } from "@/stores";
 
 import uniqid from "uniqid";
 import dayjs from "dayjs";
@@ -48,10 +47,6 @@ const TYPE_OPTIONS: { key: TypeOption; value: string }[] = [
 const Editor = () => {
   const [keyObj, setKeyObj] = useState("");
   const _id = useId();
-
-  const { openConfirmModal } = useConfirmCreateJsonStore((store) => ({
-    openConfirmModal: store.onOpen,
-  }));
 
   const { obj, setObj, onReset } = usePreviewJsonStore((store) => ({
     obj: store.obj,
@@ -130,20 +125,6 @@ const Editor = () => {
       <span className="flex justify-between ">
         <h1 className="text-2xl mb-3 font-semibold">Editor JSON</h1>
         <span className="flex items-center space-x-3">
-          <Tooltip content="generate json" size="sm" placement="bottom-start">
-            <Button
-              size="md"
-              color="warning"
-              radius="full"
-              isIconOnly
-              aria-label="generate-json-btn"
-              onClick={openConfirmModal}
-              className="text-white font-medium"
-              isDisabled={isDisabled}
-            >
-              <VscJson className="w-5 h-5" />
-            </Button>
-          </Tooltip>
           <Tooltip content="refresh" size="sm" placement="bottom-start">
             <Button
               isIconOnly
@@ -154,7 +135,7 @@ const Editor = () => {
               onClick={onReset}
               isDisabled={isDisabled}
             >
-              <FiRefreshCw className="text-gray-500 w-4 h-4" />
+              <FiRefreshCw className="text-gray-400 w-4 h-4" />
             </Button>
           </Tooltip>
         </span>
@@ -197,7 +178,7 @@ const Editor = () => {
           return (
             <div
               key={`${_id}-${key}`}
-              className="border justify-between flex items-center max-w-[80%] py-2 px-4 rounded-md shadow-sm"
+              className="border justify-between flex items-center min-w-[450px]  py-2 px-4 rounded-md shadow-sm"
             >
               <div className="flex items-center space-x-2 flex-1 ">
                 <span className="flex-[0.4] flex items-baseline text-sm space-x-2">

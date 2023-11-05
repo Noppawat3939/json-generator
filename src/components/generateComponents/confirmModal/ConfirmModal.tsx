@@ -13,10 +13,13 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 import { useConfirmCreateJsonStore } from "@/stores";
 
 const ConfirmModal = () => {
-  const { isOpen, onOpenChange } = useConfirmCreateJsonStore((store) => ({
-    isOpen: store.isOpen,
-    onOpenChange: store.onOpenChange,
-  }));
+  const { isOpen, onOpenChange, onClose } = useConfirmCreateJsonStore(
+    (store) => ({
+      isOpen: store.isOpen,
+      onOpenChange: store.onOpenChange,
+      onClose: store.onClose,
+    })
+  );
 
   const [createAmount, setCreateAmount] = useState(1);
 
@@ -70,6 +73,7 @@ const ConfirmModal = () => {
               <Button
                 color="warning"
                 radius="full"
+                onClick={onClose}
                 className="w-full font-medium text-md text-white"
                 aria-label="confirm-generate-btn"
               >
