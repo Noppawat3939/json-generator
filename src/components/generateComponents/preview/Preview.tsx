@@ -2,7 +2,7 @@
 
 import { usePreviewJsonStore } from "@/stores";
 import React from "react";
-import ReactJson from "react-json-view";
+import { JsonViewer } from "@textea/json-viewer";
 
 const Preview = () => {
   const { obj } = usePreviewJsonStore((store) => ({ obj: store.obj }));
@@ -19,15 +19,14 @@ const Preview = () => {
           </h1>
         </span>
         <span className="p-2">
-          <ReactJson
+          <JsonViewer
+            value={obj}
+            theme="dark"
+            style={{ fontFamily: "inherit" }}
+            displayDataTypes={false}
+            displaySize={false}
             enableClipboard={false}
             quotesOnKeys={false}
-            src={obj}
-            style={{ fontFamily: "inherit" }}
-            theme="tomorrow"
-            name="Root"
-            displayObjectSize={false}
-            displayDataTypes={false}
           />
         </span>
       </div>
