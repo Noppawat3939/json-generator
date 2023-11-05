@@ -1,12 +1,17 @@
-import { Footer, Hero } from "@/components";
+"use client";
+
+import { Footer, Hero, Navbar } from "@/components";
 import React from "react";
 
 const MainContainer = () => {
   return (
-    <section className="w-full flex flex-col h-screen">
-      <Hero />
-      <Footer />
-    </section>
+    <>
+      <section className="text-foreground bg-background w-full flex flex-col h-screen">
+        <Navbar />
+        <Hero />
+        <Footer />
+      </section>
+    </>
   );
 };
 

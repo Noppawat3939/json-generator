@@ -8,7 +8,7 @@ const Preview = () => {
   const { obj } = usePreviewJsonStore((store) => ({ obj: store.obj }));
 
   return (
-    <div className="p-3 flex-1 bg-[#1D1F21] text-white">
+    <div className="border border-transparent rounded-xl p-3 flex-1 bg-[#1D1F21] text-white">
       <div className="flex flex-col gap-y-2">
         <span>
           <h1

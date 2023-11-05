@@ -10,7 +10,7 @@ const Hero = () => {
     >
       <span className="flex flex-col items-center text-[3.5rem] font-bold">
         The easiest way to generate a
-        <h1 className="text-[#f5a524] text-[4.5rem]">{`{JSON}`}</h1>
+        <h1 className="bg-clip-text text-transparent bg-gradient-to-l from-[#f5a524] to-pink-600 text-[4.5rem]">{`{JSON}`}</h1>
       </span>
       <span>
         <p className="max-w-[60%] text-center m-auto text-lg text-gray-400">

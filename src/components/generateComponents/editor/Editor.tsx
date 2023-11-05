@@ -126,7 +126,7 @@ const Editor = () => {
   const isDisabled = !Boolean(Object.keys(obj).length);
 
   return (
-    <div className="flex-1 bg-slate-50 p-3">
+    <div className="flex-1 p-3 rounded-xl border">
       <span className="flex justify-between ">
         <h1 className="text-2xl mb-3 font-semibold">Editor JSON</h1>
         <span className="flex items-center space-x-3">
@@ -172,7 +172,9 @@ const Editor = () => {
                 size="sm"
                 label="Key"
                 value={keyObj}
-                onChange={({ target: { value } }) => setKeyObj(value)}
+                onChange={({ target: { value } }) =>
+                  setKeyObj(value.replaceAll(" ", "_"))
+                }
               />
               <Button
                 type="submit"

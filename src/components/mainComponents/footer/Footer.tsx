@@ -1,14 +1,21 @@
+"use client";
+
 import { Button, Link } from "@nextui-org/react";
+import { useTheme } from "next-themes";
 import React from "react";
 import { BsGithub } from "react-icons/bs";
 
 const Footer = () => {
+  const { theme } = useTheme();
+
   const githubUrl = "https://github.com/Noppawat3939";
 
   return (
     <footer
       about="main-footer"
-      className="bg-gray-900 flex pt-4 justify-center h-[100px] text-white mt-auto"
+      className={` ${
+        theme === "light" ? "bg-gray-900" : "bg-blend-darken"
+      }  flex pt-4 justify-center h-[100px] text-white mt-auto`}
     >
       <div className="flex flex-col gap-y-2 items-center">
         <p className="text-[12px] opacity-40" aria-label="main-author-footer">
