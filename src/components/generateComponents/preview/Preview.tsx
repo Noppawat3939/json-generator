@@ -2,7 +2,6 @@
 
 import { usePreviewJsonStore } from "@/stores";
 import React from "react";
-import { JsonViewer } from "@textea/json-viewer";
 
 const Preview = () => {
   const { obj } = usePreviewJsonStore((store) => ({ obj: store.obj }));
@@ -19,15 +18,7 @@ const Preview = () => {
           </h1>
         </span>
         <span className="p-2">
-          <JsonViewer
-            value={obj}
-            theme="dark"
-            style={{ fontFamily: "inherit" }}
-            displayDataTypes={false}
-            displaySize={false}
-            enableClipboard={false}
-            quotesOnKeys={false}
-          />
+          <code>{JSON.stringify(obj)}</code>
         </span>
       </div>
     </div>
