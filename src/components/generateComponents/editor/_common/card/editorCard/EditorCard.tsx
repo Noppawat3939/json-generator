@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, type FC, ChangeEvent } from "react";
+import React, { FormEvent, type FC, ChangeEvent, Fragment } from "react";
 import {
   Button,
   Popover,
@@ -21,6 +21,10 @@ type EditorCardProps = {
   onEditKey: (event: FormEvent<HTMLParagraphElement>) => void;
   onRemove: (_key: string) => void;
   onSelectedType: (event: ChangeEvent<HTMLSelectElement>, _key: string) => void;
+  onSelectedSubType: (
+    event: ChangeEvent<HTMLSelectElement>,
+    _key: string
+  ) => void;
   isArrayOrObj: boolean;
 };
 
@@ -30,6 +34,7 @@ const EditorCard: FC<EditorCardProps> = ({
   onRemove,
   onSelectedType,
   isArrayOrObj,
+  onSelectedSubType,
 }) => {
   return (
     <div className="border justify-between flex items-center min-w-[450px]  py-2 px-4 rounded-md shadow-sm">
@@ -83,8 +88,8 @@ const EditorCard: FC<EditorCardProps> = ({
       </div>
       <span className="flex space-x-2">
         {isArrayOrObj && (
-          <>
-            <Popover>
+          <Fragment>
+            <Popover placement="bottom-end">
               <PopoverTrigger>
                 <Button
                   isIconOnly
@@ -104,7 +109,7 @@ const EditorCard: FC<EditorCardProps> = ({
                     className="flex-[.7]"
                     label="selected-type"
                     radius="sm"
-                    onChange={(event) => onSelectedType(event, keyObj)}
+                    onChange={(event) => onSelectedSubType(event, keyObj)}
                   >
                     {TYPE_OPTIONS.sort((a, b) =>
                       a.key.localeCompare(b.key)
@@ -124,7 +129,7 @@ const EditorCard: FC<EditorCardProps> = ({
                 </div>
               </PopoverContent>
             </Popover>
-          </>
+          </Fragment>
         )}
 
         <Button

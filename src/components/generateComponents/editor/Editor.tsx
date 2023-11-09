@@ -1,39 +1,24 @@
 "use client";
 
-import React, {
-  type ChangeEvent,
-  FormEventHandler,
-  useId,
-  useState,
-  FormEvent,
-} from "react";
-import { Button, Tooltip } from "@nextui-org/react";
+import React, { type ChangeEvent, useId } from "react";
+import { Button, Input, Select, SelectItem, Tooltip } from "@nextui-org/react";
 import { FiRefreshCw } from "react-icons/fi";
-import { usePreviewJsonStore } from "@/stores";
+import { useJsonStore } from "@/stores";
 
 import uniqid from "uniqid";
 import dayjs from "dayjs";
-import { isArray, isObject } from "lodash";
-import { EditorCard, FormValue } from "./_common";
+import { isEmpty } from "lodash";
 import { TypeOption } from "@/types";
 
+import { MdDeleteOutline } from "react-icons/md";
+
+import { BiPlus } from "react-icons/bi";
+import { TYPE_OPTIONS } from "@/constants";
+
 const Editor = () => {
-  const [keyObj, setKeyObj] = useState("");
   const _id = useId();
 
-  const { obj, setObj, onReset } = usePreviewJsonStore((store) => ({
-    obj: store.obj,
-    setObj: store.setObj,
-    onReset: store.onReset,
-  }));
-
-  const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-
-    setObj({ ...obj, [keyObj]: null });
-
-    setKeyObj("");
-  };
+  const { values, onSetValues, onResetValues } = useJsonStore();
 
   const mapValueOfType = (_type: TypeOption, _key?: string) => {
     const ranNumber = Math.floor(Math.random() * 100);
@@ -43,7 +28,7 @@ const Editor = () => {
       TypeOption,
       string | number | Date | null | undefined | boolean | [] | object
     > = {
-      string: `mock_value_of_${_key}`,
+      string: `mock_value_of_${_key}`.toUpperCase(),
       number: ranNumber,
       boolean: isEven,
       date: isEven
@@ -59,58 +44,57 @@ const Editor = () => {
     return responseValueOfType[_type];
   };
 
-  const onSelectedType = (
-    event: ChangeEvent<HTMLSelectElement>,
-    key: string
-  ) => {
-    const { value } = event.target;
+  const createItem = () => {
+    const newValue = { id: uniqid(), key: "", value: null };
 
-    console.log({ value });
+    onSetValues([...values, newValue]);
+  };
 
-    setObj({
-      ...obj,
-      [key]: mapValueOfType(
-        value as TypeOption,
-        value === "string" ? key : undefined
-      ),
+  const onRemoveItem = (removeId: string) => {
+    const removedValue = values.length
+      ? values.filter((value) => value.id !== removeId)
+      : values;
+
+    onSetValues(removedValue);
+  };
+
+  const onKeyItemChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, id: _id } = event.target;
+
+    const updatedKeyItem = values.map((_value) => {
+      if (_value.id === _id)
+        return { ..._value, key: value.replaceAll(" ", "_") };
+
+      return _value;
     });
+
+    onSetValues(updatedKeyItem);
   };
 
-  const onRemove = (key: string) => {
-    const oldObj = { ...obj };
-    delete oldObj[key];
-    const newObj = oldObj;
+  const onValuesItemChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = event.target;
 
-    setObj(newObj);
+    const found = values.find((val) => val.id === name);
+
+    const mapValue = mapValueOfType(
+      value as TypeOption,
+      found?.key
+    ) as TypeOption;
+
+    const updatedValueItem = values.map((_value) => {
+      if (_value.id === name) return { ..._value, value: mapValue };
+
+      return _value;
+    });
+
+    onSetValues(updatedValueItem);
   };
 
-  const onEditObjKey = (event: FormEvent<HTMLParagraphElement>) => {
-    const { id, innerHTML } = event.currentTarget;
+  const isDisabled = isEmpty(values);
 
-    const updateObj = { ...obj };
-    updateObj[innerHTML] = updateObj[id];
-
-    delete updateObj[id];
-
-    setObj(updateObj);
-  };
-
-  const onAddValues = (_type: object | any[], _key: string) => {
-    const updateObj = { ...obj };
-
-    if (isArray(_type)) {
-      updateObj[_key] = ["key"];
-    }
-
-    setObj(updateObj);
-  };
-
-  const onFormValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setKeyObj(value.replaceAll(" ", ""));
-  };
-
-  const isDisabled = !Boolean(Object.keys(obj).length);
+  const sortedTypeOptions = TYPE_OPTIONS.sort((a, b) =>
+    a.key.localeCompare(b.key)
+  );
 
   return (
     <div className="flex-1 p-3 rounded-xl border">
@@ -124,7 +108,7 @@ const Editor = () => {
               variant="ghost"
               radius="full"
               aria-label="reset-value-btn"
-              onClick={onReset}
+              onClick={onResetValues}
               isDisabled={isDisabled}
             >
               <FiRefreshCw className="text-gray-400 w-4 h-4" />
@@ -132,30 +116,63 @@ const Editor = () => {
           </Tooltip>
         </span>
       </span>
-      <FormValue
-        value={keyObj}
-        onSubmit={onSubmit}
-        onChange={onFormValueChange}
-      />
+      <Button variant="ghost" isIconOnly onClick={createItem}>
+        <BiPlus className="w-6 h-6 text-gray-500" />
+      </Button>
       <div
         about="selected-object-editor"
         className="p-4 flex flex-col max-h-[500px] overflow-y-auto gap-y-2"
       >
-        {Object?.entries(obj)?.map(([key, _value], i) => {
-          const _isArray = isArray(_value);
-          const _isObject = isObject(_value);
-
-          const isArrayOrObj = _isArray || _isObject;
-
+        {values?.map((item) => {
           return (
-            <EditorCard
-              isArrayOrObj={isArrayOrObj}
-              onEditKey={onEditObjKey}
-              onSelectedType={onSelectedType}
-              onRemove={onRemove}
-              keyObj={key}
-              key={key}
-            />
+            <div
+              key={item.id}
+              className="flex space-x-2 justify-between items-center px-3 py-2 border border-foreground-200 rounded-md"
+            >
+              <span className="flex items-baseline">
+                <Input
+                  size="sm"
+                  label="Key"
+                  value={item.key}
+                  id={item.id}
+                  onChange={onKeyItemChange}
+                />
+              </span>
+              <Select
+                size="sm"
+                className="w-[50%]"
+                label="selected-type"
+                radius="sm"
+                id={item.id}
+                name={item.id}
+                onChange={onValuesItemChange}
+              >
+                {sortedTypeOptions.map(({ key, value }) => (
+                  <SelectItem
+                    variant="light"
+                    color="default"
+                    key={key}
+                    id={item.id}
+                    value={value}
+                    className="font-medium"
+                    aria-label={`type-${key}`}
+                  >
+                    {value}
+                  </SelectItem>
+                ))}
+              </Select>
+
+              <Button
+                onClick={() => onRemoveItem(item.id)}
+                size="sm"
+                variant="bordered"
+                color="danger"
+                radius="full"
+                isIconOnly
+              >
+                <MdDeleteOutline className="w-5 h-5" />
+              </Button>
+            </div>
           );
         })}
       </div>

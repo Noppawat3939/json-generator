@@ -1,12 +1,26 @@
 "use client";
 
-import { usePreviewJsonStore } from "@/stores";
+import { useJsonStore } from "@/stores";
+import { isEmpty } from "lodash";
 import React from "react";
 
-const Preview = () => {
-  const { obj } = usePreviewJsonStore((store) => ({ obj: store.obj }));
+type ConvertObject = Record<string, unknown>;
 
-  const objToStr = JSON.stringify(obj);
+const Preview = () => {
+  const { values } = useJsonStore((store) => ({ values: store.values }));
+
+  const filterEmptyValue = values.filter((val) => !isEmpty(val.key));
+
+  const convertObject = filterEmptyValue.reduce<ConvertObject>(
+    (result, item) => {
+      result[item.key] = item.value;
+
+      return result;
+    },
+    {}
+  );
+
+  const objToStr = JSON.stringify(convertObject);
   const jsonFormatted = JSON.stringify(JSON.parse(objToStr), null, 4);
 
   return (

@@ -1,1 +1,1 @@
-export { default as usePreviewJsonStore } from "./usePreviewJson";
+export { default as useJsonStore } from "./useJsonStore";

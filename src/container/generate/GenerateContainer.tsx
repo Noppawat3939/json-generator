@@ -1,19 +1,20 @@
 "use client";
 
 import { ConfirmModal, Editor, Navbar, Preview } from "@/components";
-import { useConfirmCreateJsonStore, usePreviewJsonStore } from "@/stores";
+import { useConfirmCreateJsonStore, useJsonStore } from "@/stores";
 import { Button } from "@nextui-org/react";
+import { isEmpty } from "lodash";
 import React from "react";
 import { VscJson } from "react-icons/vsc";
 
 const GenerateContainer = () => {
-  const { obj } = usePreviewJsonStore((store) => ({ obj: store.obj }));
+  const { values } = useJsonStore((store) => ({ values: store.values }));
 
   const { openConfirmModal } = useConfirmCreateJsonStore((store) => ({
     openConfirmModal: store.onOpen,
   }));
 
-  const isDisabled = !Boolean(Object.keys(obj).length);
+  const isDisabled = isEmpty(values);
 
   return (
     <section className="h-screen">
