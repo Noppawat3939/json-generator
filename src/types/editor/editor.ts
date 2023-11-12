@@ -2,9 +2,11 @@ export type TypeOption =
   | "string"
   | "number"
   | "boolean"
-  | "id"
+  | "uuid"
   | "date"
   | "null"
   | "undefined"
   | "array"
-  | "object";
+  | "object"
+  | "arrayOfString"
+  | "arrayOfObject";

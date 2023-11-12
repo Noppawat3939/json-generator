@@ -1,7 +1,14 @@
 import { TypeOption } from "@/types";
 import { create } from "zustand";
 
-type Values = { id: string; key: string; value: TypeOption | null };
+type ObjectJsonValues = {
+  id: string;
+  key: string;
+  dataType: TypeOption | null;
+  value: undefined | string | boolean | null | Date | Record<string, unknown>[];
+};
+
+type Values = ObjectJsonValues;
 
 type UseJsonStore = {
   values: Values[];
