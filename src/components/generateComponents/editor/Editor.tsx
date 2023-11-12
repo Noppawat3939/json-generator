@@ -4,8 +4,8 @@ import React, { type ChangeEvent } from "react";
 import { Button, Input, Select, SelectItem, Tooltip } from "@nextui-org/react";
 import { FiRefreshCw } from "react-icons/fi";
 import { useJsonStore } from "@/stores";
+import { v4 as uuid } from "uuid";
 
-import uniqid from "uniqid";
 import dayjs from "dayjs";
 import { isArray, isEmpty, isObject } from "lodash";
 import { TypeOption } from "@/types";
@@ -29,7 +29,7 @@ const Editor = () => {
       date: isEven
         ? dayjs().add(-`${ranNumber}`, "day").toISOString()
         : dayjs().toISOString(),
-      uuid: `$${uniqid()}`,
+      uuid: `$${uuid()}`,
       null: null,
       undefined: undefined,
       array: [],
@@ -43,7 +43,7 @@ const Editor = () => {
 
   const createItem = () => {
     const NEW_VALUE = {
-      id: uniqid(),
+      id: uuid(),
       key: "",
       value: null,
       dataType: null,
@@ -272,7 +272,7 @@ const Editor = () => {
                 isArray(item.value) &&
                 item.value.map((_, valIdx) => (
                   <div
-                    key={uniqid()}
+                    key={uuid()}
                     className="flex px-2 py-1 items-center justify-between ml-[20px] border border-foreground-200 rounded-md"
                   >
                     <div className="flex items-center space-x-2">
@@ -321,7 +321,7 @@ const Editor = () => {
                 isArray(item.value) &&
                 item?.value?.map((val) => (
                   <div
-                    key={uniqid()}
+                    key={uuid()}
                     className="flex px-3 py-2 items-center justify-between ml-5 border border-foreground-200 rounded-md"
                   >
                     <div className="flex space-x-3 w-[90%]">

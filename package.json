@@ -11,6 +11,7 @@
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
     "@types/uniqid": "^5.3.3",
+    "@types/uuid": "^9.0.7",
     "axios": "^1.5.1",
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",
@@ -20,7 +21,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.11.0",
-    "uniqid": "^5.4.0",
+    "uuid": "^9.0.1",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
