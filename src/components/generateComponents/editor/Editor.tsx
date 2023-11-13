@@ -14,6 +14,7 @@ import { MdDeleteOutline } from "react-icons/md";
 
 import { BiPlus } from "react-icons/bi";
 import { TYPE_OPTIONS } from "@/constants";
+import { FormValue } from "./common";
 
 const Editor = () => {
   const { values, onSetValues, onResetValues } = useJsonStore();
@@ -93,44 +94,39 @@ const Editor = () => {
     onSetValues(updatedValueItem);
   };
 
-  const onAddSubValues = (
+  const handleAddSubValue = (
     selectedId: string,
     key: string,
     selectedType: TypeOption
   ) => {
-    if (selectedType === "arrayOfString") {
-      const addedSubValue = values.map((item) => {
-        if (item.id === selectedId) {
-          return {
-            ...item,
-            value: item.value
-              ? //@ts-ignore
-                [...item?.value, mapValueOfType("string", key)]
+    const conditions = {
+      arrayOfString: values.map((val) =>
+        val.id === selectedId
+          ? {
+              ...val,
+              value: isArray(val.value)
+                ? [...val.value, mapValueOfType("string", key)]
+                : [null],
+            }
+          : val
+      ),
+    };
+
+    const defaultValue = values.map((val) =>
+      val.id === selectedId
+        ? {
+            ...val,
+            value: isArray(val.value)
+              ? [...val.value, mapValueOfType("arrayOfString", key)]
               : [null],
-          };
-        }
+          }
+        : val
+    );
 
-        return item;
-      });
+    const resMapCondition =
+      conditions[selectedType as keyof typeof conditions] ?? defaultValue;
 
-      onSetValues(addedSubValue);
-    } else {
-      const addedSubValue = values.map((item) => {
-        if (item.id === selectedId) {
-          return {
-            ...item,
-            value: item.value
-              ? //@ts-ignore
-                [...item?.value, mapValueOfType("arrayOfString", key)]
-              : [null],
-          };
-        }
-
-        return item;
-      });
-
-      onSetValues(addedSubValue);
-    }
+    onSetValues(resMapCondition);
   };
 
   const onRemoveSubValue = (_id: string, _type: TypeOption, _index: number) => {
@@ -194,80 +190,23 @@ const Editor = () => {
             item.dataType as TypeOption
           );
 
+          const onAddSubValue = () =>
+            handleAddSubValue(item.id, item.key, item.dataType as TypeOption);
+
           return (
             <>
-              <div
-                key={item.id}
-                className="flex space-x-1 w-full justify-between items-center px-3 py-2 border border-foreground-200 rounded-md"
-              >
-                <div className="flex space-x-3 w-[90%]">
-                  <Input
-                    className="flex-[0.4]"
-                    size="sm"
-                    label="Key"
-                    value={item.key}
-                    id={item.id}
-                    onChange={onKeyItemChange}
-                  />
+              <FormValue
+                onInputChange={onKeyItemChange}
+                name={item.key}
+                id={item.id}
+                selectOptions={sortedTypeOptions}
+                onSelectChange={onValuesItemChange}
+                dataType={item.dataType as TypeOption}
+                onRemove={() => onRemoveItem(item.id)}
+                isShowAddSubValue={isArrayOrObj}
+                onAddSubValue={onAddSubValue}
+              />
 
-                  <Select
-                    className="flex-[0.5]"
-                    size="sm"
-                    label="data-type"
-                    radius="sm"
-                    id={item.id}
-                    name={item.id}
-                    onChange={onValuesItemChange}
-                  >
-                    {sortedTypeOptions.map(({ key, label }) => (
-                      <SelectItem
-                        variant="light"
-                        color="default"
-                        key={key}
-                        id={item.id}
-                        value={label}
-                        className="font-medium"
-                        aria-label={`type-${key}`}
-                      >
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div>
-
-                <div className="flex space-x-2">
-                  {isArrayOrObj && (
-                    <Button
-                      size="sm"
-                      radius="full"
-                      isIconOnly
-                      variant="bordered"
-                      color="default"
-                      aria-label="add-sub-value-btn"
-                      onClick={() =>
-                        onAddSubValues(
-                          item.id,
-                          item.key,
-                          item.dataType as TypeOption
-                        )
-                      }
-                    >
-                      <BiPlus className="w-5 h-5 text-gray-400" />
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => onRemoveItem(item.id)}
-                    size="sm"
-                    variant="bordered"
-                    color="danger"
-                    radius="full"
-                    isIconOnly
-                    aria-label="remove-btn"
-                  >
-                    <MdDeleteOutline className="w-5 h-5" />
-                  </Button>
-                </div>
-              </div>
               {isArrayString &&
                 isArray(item.value) &&
                 item.value.map((_, valIdx) => (
@@ -319,13 +258,17 @@ const Editor = () => {
                 ))}
               {isShowSubValue &&
                 isArray(item.value) &&
-                item?.value?.map((val) => (
+                item?.value?.map((_) => (
                   <div
                     key={uuid()}
                     className="flex px-3 py-2 items-center justify-between ml-5 border border-foreground-200 rounded-md"
                   >
                     <div className="flex space-x-3 w-[90%]">
-                      <Input size="sm" className="flex-[0.4]" />
+                      <Input
+                        size="sm"
+                        className="flex-[0.4]"
+                        label="Key of sub value"
+                      />
                       <Select
                         className="flex-[0.5]"
                         size="sm"

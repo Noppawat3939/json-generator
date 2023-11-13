@@ -10,3 +10,10 @@ export type TypeOption =
   | "object"
   | "arrayOfString"
   | "arrayOfObject";
+
+export type ObjectJsonValues = {
+  id: string;
+  key: string;
+  dataType: TypeOption | null;
+  value: unknown | any[];
+};
