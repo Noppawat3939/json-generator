@@ -8,13 +8,15 @@ import { v4 as uuid } from "uuid";
 
 import dayjs from "dayjs";
 import { isArray, isEmpty, isObject } from "lodash";
-import { TypeOption } from "@/types";
+import { ObjectJsonValues, TypeOption } from "@/types";
 
 import { MdDeleteOutline } from "react-icons/md";
 
 import { BiPlus } from "react-icons/bi";
 import { TYPE_OPTIONS } from "@/constants";
 import { FormValue } from "./common";
+
+type ConditionMapValue = Record<TypeOption, ObjectJsonValues[]>;
 
 const Editor = () => {
   const { values, onSetValues, onResetValues } = useJsonStore();
@@ -99,7 +101,7 @@ const Editor = () => {
     key: string,
     selectedType: TypeOption
   ) => {
-    const conditions = {
+    const conditionAddedState = {
       arrayOfString: values.map((val) =>
         val.id === selectedId
           ? {
@@ -110,7 +112,7 @@ const Editor = () => {
             }
           : val
       ),
-    };
+    } as ConditionMapValue;
 
     const defaultValue = values.map((val) =>
       val.id === selectedId
@@ -123,27 +125,27 @@ const Editor = () => {
         : val
     );
 
-    const resMapCondition =
-      conditions[selectedType as keyof typeof conditions] ?? defaultValue;
+    const mapAddedValueResponse =
+      conditionAddedState[selectedType] ?? defaultValue;
 
-    onSetValues(resMapCondition);
+    onSetValues(mapAddedValueResponse);
   };
 
   const onRemoveSubValue = (_id: string, _type: TypeOption, _index: number) => {
-    if (_type === "arrayOfString") {
-      const removeSubValue = values.map((item) => {
-        if (item.dataType === _type && isArray(item.value)) {
-          return {
-            ...item,
-            value: item.value.filter((_, subIdx) => subIdx !== _index),
-          };
-        }
+    const conditionsRemovedState = {
+      arrayOfString: values.map((val) =>
+        val.dataType === _type && isArray(val.value)
+          ? {
+              ...val,
+              value: val.value.filter((_, subIndex) => subIndex !== _index),
+            }
+          : val
+      ),
+    } as ConditionMapValue;
 
-        return item;
-      });
+    const mapRemovedValueResponse = conditionsRemovedState[_type] ?? values;
 
-      onSetValues(removeSubValue);
-    }
+    onSetValues(mapRemovedValueResponse);
   };
 
   const isDisabled = isEmpty(values);
