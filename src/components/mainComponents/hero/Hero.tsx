@@ -22,10 +22,9 @@ const Hero = () => {
       <div className="w-full flex flex-col items-center">
         <Button
           as={Link}
-          size="lg"
-          radius="full"
-          color="warning"
-          className="text-white font-medium text-md"
+          size="md"
+          variant="light"
+          className="font-medium"
           href="/generate"
         >
           Get Started

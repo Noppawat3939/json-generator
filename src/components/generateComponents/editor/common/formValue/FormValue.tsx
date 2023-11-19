@@ -86,9 +86,9 @@ const FormValue: FC<FormValueProps> = ({
           size="sm"
           variant="bordered"
           color="danger"
-          radius="full"
           isIconOnly
           aria-label="remove-btn"
+          className="hover:opacity-60 border"
         >
           <MdDeleteOutline className="w-5 h-5" />
         </Button>

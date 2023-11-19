@@ -5,7 +5,6 @@ import { useConfirmCreateJsonStore, useJsonStore } from "@/stores";
 import { Button } from "@nextui-org/react";
 import { isEmpty } from "lodash";
 import React from "react";
-import { VscJson } from "react-icons/vsc";
 
 const GenerateContainer = () => {
   const { values } = useJsonStore((store) => ({ values: store.values }));
@@ -26,13 +25,12 @@ const GenerateContainer = () => {
       <div className="flex justify-center">
         <Button
           onClick={openConfirmModal}
-          color="warning"
-          size="lg"
+          size="md"
+          variant="solid"
           isDisabled={isDisabled}
-          className="font-medium text-xl text-white"
+          className="font-medium text-white bg-gradient-to-l from-[#f5a524] to-pink-600"
         >
-          Generate
-          <VscJson className="w-6 h-6" />
+          Generate JSON Data
         </Button>
       </div>
       <ConfirmModal />

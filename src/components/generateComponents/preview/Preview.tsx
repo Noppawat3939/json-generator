@@ -20,7 +20,9 @@ const Preview = () => {
     {}
   );
 
-  const objToStr = JSON.stringify(convertObject);
+  const objToStr = isEmpty(values?.at(0)?.key)
+    ? JSON.stringify(convertObject)
+    : JSON.stringify([convertObject]);
   const jsonFormatted = JSON.stringify(JSON.parse(objToStr), null, 4);
 
   return (
@@ -31,13 +33,13 @@ const Preview = () => {
             aria-label="preview-title"
             className="text-[#f5a524] text-2xl font-semibold"
           >
-            Example JSON
+            Preview JSON
           </h1>
         </span>
         <span className="p-2">
           <textarea
             readOnly
-            className="bg-black text-gray-300 leading-7 focus-within:hidden bg-transparent w-full resize-none border-hidden h-[500px]"
+            className="bg-black  text-foreground-600 leading-7 focus-within:hidden bg-transparent w-full resize-none border-hidden h-[500px]"
             value={jsonFormatted}
           />
         </span>
