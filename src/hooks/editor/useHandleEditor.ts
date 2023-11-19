@@ -139,16 +139,19 @@ const useHandleEditor = () => {
     setValues(mapRemovedValueResponse);
   };
 
-  const onExpandSubValue = (_id: string) => {
-    if (!isEmpty(expandSubValue) && !expandSubValue.includes(_id)) {
-      return setExpandSubValue([...expandSubValue, _id]);
+  const onExpandSubValue = (expandId: string) => {
+    const hasExpands = !isEmpty(expandSubValue);
+    if (hasExpands && !expandSubValue.includes(expandId)) {
+      return setExpandSubValue([...expandSubValue, expandId]);
     }
 
-    if (!isEmpty(expandSubValue) && expandSubValue.includes(_id)) {
-      return setExpandSubValue((prev) => prev.filter((v) => v !== _id));
+    if (hasExpands && expandSubValue.includes(expandId)) {
+      return setExpandSubValue((prev) =>
+        prev.filter((prevExpandId) => prevExpandId !== expandId)
+      );
     }
 
-    setExpandSubValue([_id]);
+    setExpandSubValue([expandId]);
   };
 
   const resetValues = () => {
