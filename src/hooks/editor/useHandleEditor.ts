@@ -1,16 +1,19 @@
 import { mapEditorValue } from "@/helper";
 import { useJsonStore } from "@/stores";
 import { ObjectJsonValues, TypeOption } from "@/types";
-import { isArray } from "lodash";
+import { isArray, isEmpty } from "lodash";
+import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
 type ConditionMapValue = Record<TypeOption, ObjectJsonValues[]>;
 
 const useHandleEditor = () => {
-  const { values, setValues, resetValues } = useJsonStore((store) => ({
+  const [expandSubValue, setExpandSubValue] = useState<string[]>([]);
+
+  const { values, setValues, onResetValues } = useJsonStore((store) => ({
     values: store.values,
     setValues: store.onSetValues,
-    resetValues: store.onResetValues,
+    onResetValues: store.onResetValues,
   }));
 
   const onAddField = () => {
@@ -82,6 +85,16 @@ const useHandleEditor = () => {
             }
           : val
       ),
+      arrayOfNumber: values.map((val) =>
+        val.id === selectedId
+          ? {
+              ...val,
+              value: isArray(val.value)
+                ? [...val.value, mapEditorValue("number", key)]
+                : [null],
+            }
+          : val
+      ),
     } as ConditionMapValue;
 
     const defaultValue = values.map((val) =>
@@ -111,11 +124,36 @@ const useHandleEditor = () => {
             }
           : val
       ),
+      arrayOfNumber: values.map((val) =>
+        val.dataType === _type && isArray(val.value)
+          ? {
+              ...val,
+              value: val.value.filter((_, subIndex) => subIndex !== _index),
+            }
+          : val
+      ),
     } as ConditionMapValue;
 
     const mapRemovedValueResponse = conditionsRemovedState[_type] ?? values;
 
     setValues(mapRemovedValueResponse);
+  };
+
+  const onExpandSubValue = (_id: string) => {
+    if (!isEmpty(expandSubValue) && !expandSubValue.includes(_id)) {
+      return setExpandSubValue([...expandSubValue, _id]);
+    }
+
+    if (!isEmpty(expandSubValue) && expandSubValue.includes(_id)) {
+      return setExpandSubValue((prev) => prev.filter((v) => v !== _id));
+    }
+
+    setExpandSubValue([_id]);
+  };
+
+  const resetValues = () => {
+    setExpandSubValue([]);
+    onResetValues();
   };
 
   return {
@@ -125,6 +163,7 @@ const useHandleEditor = () => {
     onSelectChange: onDataTypeChange,
     subFields: { onAddSubField, onRemoveSubField },
     store: { values, resetValues },
+    expand: { state: expandSubValue, onExpandSubValue },
   };
 };
 

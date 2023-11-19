@@ -9,6 +9,7 @@ export type TypeOption =
   | "array"
   | "object"
   | "arrayOfString"
+  | "arrayOfNumber"
   | "arrayOfObject";
 
 export type ObjectJsonValues = {

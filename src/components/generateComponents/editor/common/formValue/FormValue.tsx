@@ -31,7 +31,7 @@ const FormValue: FC<FormValueProps> = ({
   onInputChange,
 }) => {
   return (
-    <div className="flex space-x-1 w-full justify-between items-center px-3 py-2 border border-foreground-200 rounded-md">
+    <div className="border-l-4 border-l-[#f7b750] flex space-x-1 w-full justify-between items-center px-3 py-2 border border-foreground-200 rounded-md">
       <div className="flex space-x-3 w-[90%]">
         <Input
           className="flex-[0.4]"

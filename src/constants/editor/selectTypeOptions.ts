@@ -12,4 +12,5 @@ export const TYPE_OPTIONS: { key: TypeOption; label: string }[] = [
   { key: "object", label: "Object" },
   { key: "arrayOfString", label: "Array of string" },
   { key: "arrayOfObject", label: "Array of object" },
+  { key: "arrayOfNumber", label: "Array of number" },
 ];

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { v4 as uuid } from "uuid";
 
 export const mapEditorValue = (_type: TypeOption, _key?: string) => {
-  const ranNumber = Math.floor(Math.random() * 100);
+  const ranNumber = Math.floor(Math.random() * 500);
   const isEven = ranNumber % 2 === 0;
 
   const responseValueOfType = {
@@ -20,7 +20,8 @@ export const mapEditorValue = (_type: TypeOption, _key?: string) => {
     object: {},
     arrayOfObject: [{}],
     arrayOfString: [`mock value of ${_key}`],
-  };
+    arrayOfNumber: [ranNumber],
+  } as Record<TypeOption, unknown>;
 
   return responseValueOfType[_type];
 };
