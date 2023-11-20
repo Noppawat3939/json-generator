@@ -8,7 +8,7 @@ import { ThemeProvider } from "next-themes";
 const AppProvider: FC<Layout> = ({ children }) => {
   return (
     <NextUIProvider>
-      <ThemeProvider attribute="class" defaultTheme="light">
+      <ThemeProvider attribute="class" defaultTheme="system">
         {children}
       </ThemeProvider>
     </NextUIProvider>
