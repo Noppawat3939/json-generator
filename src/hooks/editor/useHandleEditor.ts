@@ -162,7 +162,7 @@ const useHandleEditor = () => {
   return {
     onAddField,
     onRemoveField,
-    onInputChange: onKeyChange,
+    inputProps: { onKeyChange },
     onSelectChange: onDataTypeChange,
     subFields: { onAddSubField, onRemoveSubField },
     store: { values, resetValues },

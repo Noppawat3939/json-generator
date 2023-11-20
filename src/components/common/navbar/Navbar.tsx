@@ -2,10 +2,9 @@
 
 import { Button, Link } from "@nextui-org/react";
 import React from "react";
-import logo from "@/assets/images/logo.jpeg";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { CiLight, CiDark } from "react-icons/ci";
+import { VscJson } from "react-icons/vsc";
 
 import { useTheme } from "next-themes";
 
@@ -15,23 +14,20 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="py-5 px-[5%] flex justify-between">
+    <nav className="py-5 px-[2.5%] flex justify-between">
       {pathname !== "/" && (
-        <Button
-          radius="full"
-          isIconOnly
-          as={Link}
-          color="warning"
-          href="/"
-          size="md"
-          className="hover:opacity-100 shadow-sm"
-        >
-          <Image
-            src={logo}
-            alt="logo"
-            className="bg-white object-cover shadow-md w-full h-full"
-          />
-        </Button>
+        <span className="flex items-center space-x-2">
+          <Button
+            as={Link}
+            variant="bordered"
+            href="/"
+            aria-label="logo-btn"
+            className="font-semibold text-[20px] text-foreground-700 border-none hover:opacity-100 hover:bg-transparent rounded-full outline-none "
+          >
+            <VscJson className="w-7 h-7 text-[#F5A524]" />
+            Generator
+          </Button>
+        </span>
       )}
 
       <Button

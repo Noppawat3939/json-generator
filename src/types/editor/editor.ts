@@ -9,8 +9,7 @@ export type TypeOption =
   | "array"
   | "object"
   | "arrayOfString"
-  | "arrayOfNumber"
-  | "arrayOfObject";
+  | "arrayOfNumber";
 
 export type ObjectJsonValues = {
   id: string;

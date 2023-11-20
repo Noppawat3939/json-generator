@@ -32,9 +32,9 @@ const FormValue: FC<FormValueProps> = ({
 }) => {
   return (
     <div className="border-l-4 border-l-[#f7b750] flex space-x-1 w-full justify-between items-center px-3 py-2 border border-foreground-200 rounded-md">
-      <div className="flex space-x-3 w-[90%]">
+      <div className="flex space-x-3 w-full">
         <Input
-          className="flex-[0.4]"
+          className="flex-[0.45]"
           size="sm"
           label="Key"
           value={name}
@@ -45,7 +45,7 @@ const FormValue: FC<FormValueProps> = ({
         <Select
           className="flex-[0.5]"
           size="sm"
-          label="data-type"
+          label="Type"
           radius="sm"
           id={id}
           name={id}

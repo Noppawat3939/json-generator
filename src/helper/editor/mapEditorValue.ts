@@ -18,7 +18,6 @@ export const mapEditorValue = (_type: TypeOption, _key?: string) => {
     undefined: undefined,
     array: [],
     object: {},
-    arrayOfObject: [{}],
     arrayOfString: [`mock value of ${_key}`],
     arrayOfNumber: [ranNumber],
   } as Record<TypeOption, unknown>;

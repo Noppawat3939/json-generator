@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { useConfirmCreateJsonStore } from "@/stores";
+import { createJson } from "@/services";
 
 const ConfirmModal = () => {
   const { isOpen, onOpenChange, onClose } = useConfirmCreateJsonStore(
@@ -22,6 +23,19 @@ const ConfirmModal = () => {
   );
 
   const [createAmount, setCreateAmount] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const generateJson = async () => {
+    setLoading(true);
+    await createJson();
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+      onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  };
 
   return (
     <Modal
@@ -71,9 +85,10 @@ const ConfirmModal = () => {
             </ModalBody>
             <ModalFooter>
               <Button
+                isLoading={loading}
                 color="warning"
                 radius="full"
-                onClick={onClose}
+                onClick={generateJson}
                 className="w-full font-medium text-md text-white"
                 aria-label="confirm-generate-btn"
               >
