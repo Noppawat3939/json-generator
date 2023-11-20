@@ -1,7 +1,6 @@
-import { ENDPOINT } from "@/constants";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
-export const createJson = async () => {
-  return axios.post(`${baseUrl}/${ENDPOINT.CREATE_JSON}`);
+export const createJson = async (): Promise<AxiosResponse> => {
+  return axios.get(`${baseUrl}`);
 };
