@@ -18,7 +18,7 @@ const GenerateContainer = () => {
   return (
     <section className="h-screen">
       <Navbar />
-      <div className="py-4 space-x-3 flex px-[5%]">
+      <div className="py-4 space-x-3 flex px-2">
         <Editor />
         <Preview />
       </div>
