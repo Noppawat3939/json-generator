@@ -16,12 +16,12 @@ const GenerateContainer = () => {
   const isDisabled = isEmpty(values);
 
   return (
-    <section className="h-screen">
+    <main className="h-screen w-screen">
       <Navbar />
-      <div className="py-4 space-x-3 flex px-2">
+      <section className="py-4 space-x-3 flex px-2">
         <Editor />
         <Preview />
-      </div>
+      </section>
       <div className="flex justify-center">
         <Button
           onClick={openConfirmModal}
@@ -34,7 +34,7 @@ const GenerateContainer = () => {
         </Button>
       </div>
       <ConfirmModal />
-    </section>
+    </main>
   );
 };
 

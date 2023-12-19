@@ -1,3 +1,3 @@
 export const ENDPOINT = {
-  CREATE_JSON: "create-json",
-};
+  CREATE_JSON: "/api/generate",
+} as const;

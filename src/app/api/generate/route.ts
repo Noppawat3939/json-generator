@@ -1,46 +1,32 @@
-import { DICT_RESOURCES } from "@/constants";
-import { getDummyJson } from "@/services";
-import type { DummyResources, ObjectJsonValues } from "@/types";
-import { cleanupStringList, groupModelByKey } from "@/utils";
-import { intersection } from "lodash";
+import type { Model } from "@/types";
+import { createNewDTO, generateArrayObject } from "@/utils";
 import { type NextRequest, NextResponse } from "next/server";
 
-type Model = ObjectJsonValues;
-type GenerateJsonRequest = { model: Model[]; limit: number };
+type GenerateJsonRequest = { model: Model[] };
 
 export const POST = async (req: NextRequest) => {
   const body = (await req.json()) as GenerateJsonRequest;
 
-  const grouped = groupModelByKey(body.model, "key");
+  const limit = Number(req.nextUrl.searchParams.get("limit"));
 
-  const cleanedKeys = Object.keys(grouped);
+  if (limit > 1000)
+    return NextResponse.json(
+      { message: "Limit exceeded", error: true },
+      { status: 400 }
+    );
 
-  const findDictResource = () => {
-    for (const key in DICT_RESOURCES) {
-      if (
-        intersection(
-          DICT_RESOURCES[key as keyof typeof DICT_RESOURCES],
-          cleanedKeys
-        ).length
-      )
-        return key as DummyResources;
-    }
+  const modelDTO = createNewDTO(body.model);
 
-    return "";
-  };
-
-  const cleanedDictResources =
-    DICT_RESOURCES[findDictResource() as keyof typeof DICT_RESOURCES] ??
-    DICT_RESOURCES.USERS;
-
-  const intersectKeys = intersection(cleanedKeys, cleanedDictResources);
-
-  //   console.log("🚀 ===> intersectKeys:", intersectKeys);
-
-  const { data } = await getDummyJson(
-    (findDictResource() as DummyResources) ?? "carts",
-    body.limit
+  const findIdType = body.model.find((_model) =>
+    _model.dataType === "uuid" ? _model.key : null
   );
 
-  return NextResponse.json({ message: "ok", data });
+  const idKey = findIdType?.key ?? "_id";
+
+  const data = generateArrayObject(modelDTO, limit, idKey);
+
+  return NextResponse.json({
+    message: "Generate new JSON is success",
+    data,
+  });
 };

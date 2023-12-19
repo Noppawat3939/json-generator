@@ -1,1 +1,1 @@
-export * from "./common-util";
+export * from "./generate-util";

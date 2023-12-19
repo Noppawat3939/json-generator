@@ -14,17 +14,22 @@ const useGenerateJson = () => {
   const [status, setStatus] = useState<Status>("idle");
   const [limit, setLimit] = useState(1);
 
-  const filteredValues = values.filter(
-    (val) => val.key && val.id && val.dataType
-  );
+  const filteredValues = values
+    .map(({ value, key, dataType }) => ({
+      key,
+      value,
+      dataType,
+    }))
+    .filter((val) => val.key && val.dataType);
 
   const handleGenerateJson = async () => {
     setStatus("loading");
     try {
-      const { status } = await generateJson(filteredValues, limit);
+      const { status, data } = await generateJson(filteredValues, limit);
 
       if (status === HttpStatusCode.Ok) {
         setStatus("success");
+        console.log(data.data);
       }
 
       onCloseModal();
@@ -38,8 +43,9 @@ const useGenerateJson = () => {
     }
   };
 
-  const onIncreaseLimit = () => setLimit((prev) => prev + 1);
-  const onDecreaseLimit = () => (limit <= 1 ? 1 : setLimit((prev) => prev - 1));
+  const handleIncreaseLimit = () => setLimit((prev) => prev + 1);
+  const handleDecreaseLimit = () =>
+    limit <= 1 ? 1 : setLimit((prev) => prev - 1);
   const resetLimit = () => setLimit(1);
 
   const isSuccess = status === "success";
@@ -50,8 +56,8 @@ const useGenerateJson = () => {
   return {
     action: {
       handleGenerateJson,
-      onIncreaseLimit,
-      onDecreaseLimit,
+      handleIncreaseLimit,
+      handleDecreaseLimit,
       resetLimit,
     },
     state: { isSuccess, isLoading, isError, isIdle, limit },

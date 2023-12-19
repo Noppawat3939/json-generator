@@ -23,8 +23,8 @@ const ConfirmModal = () => {
     state: { isLoading, limit },
     action: {
       handleGenerateJson,
-      onDecreaseLimit,
-      onIncreaseLimit,
+      handleDecreaseLimit,
+      handleIncreaseLimit,
       resetLimit,
     },
   } = useGenerateJson();
@@ -56,7 +56,7 @@ const ConfirmModal = () => {
                   radius="full"
                   isIconOnly
                   isDisabled={limit <= 1}
-                  onClick={onDecreaseLimit}
+                  onClick={handleDecreaseLimit}
                 >
                   <FiMinus className="w-5 h-5 text-foreground-500" />
                 </Button>
@@ -69,7 +69,7 @@ const ConfirmModal = () => {
                   size="sm"
                   radius="full"
                   isIconOnly
-                  onClick={onIncreaseLimit}
+                  onClick={handleIncreaseLimit}
                 >
                   <FiPlus className="w-5 h-5 text-foreground-500" />
                 </Button>
