@@ -1,7 +1,7 @@
 "use client";
 
 import { ConfirmModal, Editor, Navbar, Preview } from "@/components";
-import { useConfirmCreateJsonStore, useJsonStore } from "@/stores";
+import { useJsonStore, useModalStore } from "@/stores";
 import { Button } from "@nextui-org/react";
 import { isEmpty } from "lodash";
 import React from "react";
@@ -9,7 +9,7 @@ import React from "react";
 const GenerateContainer = () => {
   const { values } = useJsonStore((store) => ({ values: store.values }));
 
-  const { openConfirmModal } = useConfirmCreateJsonStore((store) => ({
+  const { openConfirmModal } = useModalStore((store) => ({
     openConfirmModal: store.onOpen,
   }));
 
@@ -24,7 +24,7 @@ const GenerateContainer = () => {
       </section>
       <div className="flex justify-center">
         <Button
-          onClick={openConfirmModal}
+          onClick={() => openConfirmModal("confirmModal")}
           size="md"
           variant="solid"
           isDisabled={isDisabled}

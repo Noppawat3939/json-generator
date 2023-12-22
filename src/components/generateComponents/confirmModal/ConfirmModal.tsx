@@ -10,12 +10,12 @@ import {
   ModalFooter,
   Input,
 } from "@nextui-org/react";
-import { useConfirmCreateJsonStore } from "@/stores";
+import { useModalStore } from "@/stores";
 import { useGenerateJson } from "@/hooks";
 
 const ConfirmModal = () => {
-  const { isOpen, onOpenChange } = useConfirmCreateJsonStore((store) => ({
-    isOpen: store.isOpen,
+  const { open, onOpenChange } = useModalStore((store) => ({
+    open: store.open,
     onOpenChange: store.onOpenChange,
   }));
 
@@ -24,14 +24,16 @@ const ConfirmModal = () => {
     action: { handleGenerateJson, resetLimit, onLimitChange },
   } = useGenerateJson();
 
-  const handleOnOpenChange = (_open: boolean) => {
-    onOpenChange(_open);
+  const handleOnOpenChange = () => {
+    onOpenChange(open === "confirmModal" ? null : "confirmModal");
     resetLimit();
   };
 
+  if (open !== "confirmModal") return null;
+
   return (
     <Modal
-      isOpen={isOpen}
+      isOpen={open === "confirmModal"}
       isDismissable={false}
       onOpenChange={handleOnOpenChange}
     >
@@ -53,7 +55,7 @@ const ConfirmModal = () => {
                     defaultValue="1"
                     value={limit}
                     placeholder="limit 1-100"
-                    className="max-w-[200px] mx-auto"
+                    className="max-w-[150px] mx-auto"
                   />
                   {isError && (
                     <span

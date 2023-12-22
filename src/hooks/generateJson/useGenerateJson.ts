@@ -2,10 +2,10 @@ import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { generateJson } from "@/services";
 import type { Status } from "@/types";
 import { HttpStatusCode, type AxiosError } from "axios";
-import { useConfirmCreateJsonStore, useJsonStore } from "@/stores";
+import { useJsonStore, useModalStore } from "@/stores";
 
 const useGenerateJson = () => {
-  const { onCloseModal } = useConfirmCreateJsonStore((store) => ({
+  const { onCloseModal } = useModalStore((store) => ({
     onCloseModal: store.onClose,
   }));
 
@@ -29,10 +29,7 @@ const useGenerateJson = () => {
     setStatus("loading");
 
     try {
-      const { status, data } = await generateJson(
-        filteredValues,
-        Number(limit)
-      );
+      const { status, data } = await generateJson(filteredValues, +limit);
 
       if (status === HttpStatusCode.Ok) {
         setStatus("success");
@@ -43,7 +40,8 @@ const useGenerateJson = () => {
       }
     } catch (err) {
       const error = err as AxiosError;
-      console.log("Error generating JSON", error.response?.data);
+
+      console.warn("Error generating JSON", error.response?.data);
       setStatus("error");
     }
   };
