@@ -8,8 +8,8 @@ import {
   ModalBody,
   Button,
   ModalFooter,
+  Input,
 } from "@nextui-org/react";
-import { FiPlus, FiMinus } from "react-icons/fi";
 import { useConfirmCreateJsonStore } from "@/stores";
 import { useGenerateJson } from "@/hooks";
 
@@ -20,13 +20,8 @@ const ConfirmModal = () => {
   }));
 
   const {
-    state: { isLoading, limit },
-    action: {
-      handleGenerateJson,
-      handleDecreaseLimit,
-      handleIncreaseLimit,
-      resetLimit,
-    },
+    state: { isLoading, limit, isError },
+    action: { handleGenerateJson, resetLimit, onLimitChange },
   } = useGenerateJson();
 
   const handleOnOpenChange = (_open: boolean) => {
@@ -47,33 +42,29 @@ const ConfirmModal = () => {
               Confirm generate JSON data
             </ModalHeader>
             <ModalBody className="text-center py-4">
-              {`You want to create data amount (length)`}
-              <div className="mx-auto flex items-center space-x-1">
-                <Button
-                  aria-label="decrease-json-data-btn"
-                  variant="bordered"
-                  size="sm"
-                  radius="full"
-                  isIconOnly
-                  isDisabled={limit <= 1}
-                  onClick={handleDecreaseLimit}
-                >
-                  <FiMinus className="w-5 h-5 text-foreground-500" />
-                </Button>
-                <p className="text-xl font-medium text-center w-[40px]">
-                  {limit}
-                </p>
-                <Button
-                  aria-label="increase-json-data-btn"
-                  variant="bordered"
-                  size="sm"
-                  radius="full"
-                  isIconOnly
-                  onClick={handleIncreaseLimit}
-                >
-                  <FiPlus className="w-5 h-5 text-foreground-500" />
-                </Button>
-              </div>
+              <form onSubmit={handleGenerateJson}>
+                {`You want to create data amount (limit 100)`}
+                <div className="relative mx-auto my-2 flex space-y-2 flex-col items-center">
+                  <Input
+                    isClearable
+                    isInvalid={isError}
+                    onClear={resetLimit}
+                    onChange={onLimitChange}
+                    defaultValue="1"
+                    value={limit}
+                    placeholder="limit 1-100"
+                    className="max-w-[200px] mx-auto"
+                  />
+                  {isError && (
+                    <span
+                      aria-label="error-message"
+                      className="text-xs text-red-500 bottom-[-25px] absolute"
+                    >
+                      The number of creations does not exceed 100.
+                    </span>
+                  )}
+                </div>
+              </form>
             </ModalBody>
             <ModalFooter>
               <Button

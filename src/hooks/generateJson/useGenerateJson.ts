@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { generateJson } from "@/services";
 import type { Status } from "@/types";
 import { HttpStatusCode, type AxiosError } from "axios";
@@ -12,7 +12,7 @@ const useGenerateJson = () => {
   const { values } = useJsonStore((store) => ({ values: store.values }));
 
   const [status, setStatus] = useState<Status>("idle");
-  const [limit, setLimit] = useState(1);
+  const [limit, setLimit] = useState("1");
 
   const filteredValues = values
     .map(({ value, key, dataType }) => ({
@@ -22,31 +22,54 @@ const useGenerateJson = () => {
     }))
     .filter((val) => val.key && val.dataType);
 
-  const handleGenerateJson = async () => {
+  const handleGenerateJson = async (
+    event: FormEvent<HTMLFormElement | HTMLButtonElement>
+  ) => {
+    event.preventDefault();
     setStatus("loading");
+
     try {
-      const { status, data } = await generateJson(filteredValues, limit);
+      const { status, data } = await generateJson(
+        filteredValues,
+        Number(limit)
+      );
 
       if (status === HttpStatusCode.Ok) {
         setStatus("success");
         console.log(data.data);
-      }
 
-      onCloseModal();
-      setLimit(1);
+        onCloseModal();
+        setLimit("1");
+      }
     } catch (err) {
       const error = err as AxiosError;
-
-      console.warn("Error generating JSON", error.response?.data);
-
+      console.log("Error generating JSON", error.response?.data);
       setStatus("error");
     }
   };
 
-  const handleIncreaseLimit = () => setLimit((prev) => prev + 1);
-  const handleDecreaseLimit = () =>
-    limit <= 1 ? 1 : setLimit((prev) => prev - 1);
-  const resetLimit = () => setLimit(1);
+  const onLimitChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    const regex = /[^\d]+/g;
+
+    const replacedNumber = value.replaceAll(regex, "");
+
+    const cleaned = replacedNumber.startsWith("0")
+      ? replacedNumber.slice(-1)
+      : replacedNumber;
+
+    setLimit(cleaned);
+
+    if (status === "error") {
+      setStatus("idle");
+    }
+  }, []);
+
+  const resetLimit = useCallback(() => {
+    setLimit("1");
+    setStatus("idle");
+  }, []);
 
   const isSuccess = status === "success";
   const isLoading = status === "loading";
@@ -56,9 +79,8 @@ const useGenerateJson = () => {
   return {
     action: {
       handleGenerateJson,
-      handleIncreaseLimit,
-      handleDecreaseLimit,
       resetLimit,
+      onLimitChange,
     },
     state: { isSuccess, isLoading, isError, isIdle, limit },
   };
