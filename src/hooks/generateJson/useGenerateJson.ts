@@ -5,8 +5,10 @@ import { HttpStatusCode, type AxiosError } from "axios";
 import { useJsonStore, useModalStore } from "@/stores";
 
 const useGenerateJson = () => {
-  const { onCloseModal } = useModalStore((store) => ({
+  const { onCloseModal, openModal, setData } = useModalStore((store) => ({
     onCloseModal: store.onClose,
+    openModal: store.onOpen,
+    setData: store.setData,
   }));
 
   const { values } = useJsonStore((store) => ({ values: store.values }));
@@ -33,10 +35,14 @@ const useGenerateJson = () => {
 
       if (status === HttpStatusCode.Ok) {
         setStatus("success");
-        console.log(data.data);
+        setData(data.data);
 
         onCloseModal();
-        setLimit("1");
+
+        setTimeout(() => {
+          setLimit("1");
+          openModal("generatedJsonModal");
+        }, 1000);
       }
     } catch (err) {
       const error = err as AxiosError;

@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfirmModal, Editor, Navbar, Preview } from "@/components";
+import { Editor, Navbar, Preview } from "@/components";
 import { useJsonStore, useModalStore } from "@/stores";
 import { Button } from "@nextui-org/react";
 import { isEmpty } from "lodash";
@@ -33,7 +33,6 @@ const GenerateContainer = () => {
           Generate JSON Data
         </Button>
       </div>
-      <ConfirmModal />
     </main>
   );
 };

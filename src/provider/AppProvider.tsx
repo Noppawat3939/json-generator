@@ -1,15 +1,16 @@
 "use client";
 
-import { Layout } from "@/types";
+import type { Layout } from "@/types";
 import { NextUIProvider } from "@nextui-org/react";
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { ThemeProvider } from "next-themes";
+import { ModalProvider } from "@/provider";
 
 const AppProvider: FC<Layout> = ({ children }) => {
   return (
     <NextUIProvider>
       <ThemeProvider attribute="class" defaultTheme="system">
-        {children}
+        <ModalProvider>{children}</ModalProvider>
       </ThemeProvider>
     </NextUIProvider>
   );
