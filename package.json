@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@loadable/component": "^5.16.3",
     "@nextui-org/react": "^2.1.13",
+    "@types/loadable__component": "^5.13.8",
     "@types/uniqid": "^5.3.3",
     "@types/uuid": "^9.0.7",
     "axios": "^1.6.2",

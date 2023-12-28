@@ -11,8 +11,8 @@ import {
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import { IoCopyOutline, IoCheckmarkDoneOutline } from "react-icons/io5";
-
-import ReactJson from "react-json-view";
+import loadable from "@loadable/component";
+const ReactJson = loadable(() => import("react-json-view"));
 
 const GeneratedJsonModal = () => {
   const { open, onClose, data } = useModalStore((store) => ({
