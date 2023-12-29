@@ -12,8 +12,10 @@ import React from "react";
 import { IoCopyOutline, IoCheckmarkDoneOutline } from "react-icons/io5";
 import loadable from "@loadable/component";
 
-import { Highlight, themes } from "prism-react-renderer";
 import { useGenerateCompleted } from "@/hooks";
+import { useTheme } from "next-themes";
+import { HighLight } from "..";
+import { themes } from "prism-react-renderer";
 
 const ReactJson = loadable(() => import("react-json-view"));
 
@@ -22,6 +24,10 @@ const GeneratedJsonModal = () => {
     action: { handleCloseModal, handleSelectedTab, handleCopyClipboard },
     state: { openModal, objectData, jsonInterface, selectedTab, isCopied },
   } = useGenerateCompleted();
+
+  const { theme } = useTheme();
+
+  const isLightTheme = theme === "light";
 
   const isSelectedJson = selectedTab === "jsonData";
 
@@ -43,6 +49,7 @@ const GeneratedJsonModal = () => {
             isIconOnly
             aria-label="copy-json-btn"
             size="sm"
+            variant={isLightTheme ? "bordered" : "solid"}
             onClick={isCopied ? undefined : handleCopyClipboard}
           >
             {isCopied ? (
@@ -56,8 +63,11 @@ const GeneratedJsonModal = () => {
           <section className="py-2 max-h-[360px] overflow-y-scroll">
             {isSelectedJson && (
               <ReactJson
+                style={{ background: "transparent", fontFamily: "inherit" }}
                 src={objectData as object}
-                theme="threezerotwofour"
+                theme={
+                  isLightTheme ? "summerfruit:inverted" : "threezerotwofour"
+                }
                 enableClipboard={false}
                 collapsed={false}
                 displayObjectSize={false}
@@ -69,23 +79,10 @@ const GeneratedJsonModal = () => {
               />
             )}
             {!isSelectedJson && (
-              <Highlight
-                theme={themes.duotoneDark}
+              <HighLight
                 code={jsonInterface}
-                language="tsx"
-              >
-                {({ tokens, getLineProps, getTokenProps }) => (
-                  <pre className="max-h-[360px] p-2">
-                    {tokens.map((line, i) => (
-                      <div key={i} {...getLineProps({ line })}>
-                        {line.map((token, key) => (
-                          <span key={key} {...getTokenProps({ token })} />
-                        ))}
-                      </div>
-                    ))}
-                  </pre>
-                )}
-              </Highlight>
+                theme={isLightTheme ? themes.jettwaveLight : themes.duotoneDark}
+              />
             )}
           </section>
         </ModalBody>
