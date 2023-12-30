@@ -1,6 +1,6 @@
 "use client";
 
-import { Hero, Navbar } from "@/components";
+import { Hero, Navbar, PreviewFeatures } from "@/components";
 import React from "react";
 
 const MainContainer = () => {
@@ -8,7 +8,10 @@ const MainContainer = () => {
     <>
       <section className="text-foreground bg-background w-full flex flex-col h-screen">
         <Navbar />
-        <Hero />
+        <section className="flex flex-col gap-3">
+          <Hero />
+          <PreviewFeatures />
+        </section>
       </section>
     </>
   );

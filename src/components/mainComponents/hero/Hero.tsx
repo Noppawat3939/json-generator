@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div
       about="main-hero"
-      className="min-h-[600px] flex flex-col gap-y-5 justify-center items-center"
+      className="h-screen flex flex-col gap-y-5 justify-center items-center"
     >
       <span className="flex flex-col items-center text-[3.5rem] font-bold">
         The easiest way to generate a
