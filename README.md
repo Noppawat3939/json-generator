@@ -8,3 +8,8 @@ This repository contains a project focused on generating mock JSON data with cus
 - **Adjustable Limits**: Provides functionality to increase or decrease limits for generating JSON data.
 - **Client-Server Architecture**: Utilizes a client-server setup to manage and generate mock JSON data.
 - **Tech Stack**: Next.js
+
+
+## Demo
+
+Check out the live demo of JSON Generator [here](https://json-generator-dev.vercel.app).
