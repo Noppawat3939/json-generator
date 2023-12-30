@@ -45,7 +45,7 @@ const ConfirmModal = () => {
             </ModalHeader>
             <ModalBody className="text-center py-4">
               <form onSubmit={handleGenerateJson}>
-                {`You want to create data amount (limit 100)`}
+                {`You want to create data amount (limit 1,000)`}
                 <div className="relative mx-auto my-2 flex space-y-2 flex-col items-center">
                   <Input
                     isClearable
