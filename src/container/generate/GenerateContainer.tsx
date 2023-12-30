@@ -16,9 +16,9 @@ const GenerateContainer = () => {
   const isDisabled = isEmpty(values);
 
   return (
-    <main className="h-screen w-screen">
+    <main className="w-screen" about="generate-json-container">
       <Navbar />
-      <section className="py-4 space-x-3 flex px-2">
+      <section className="py-4 space-x-3 flex max-w-[90%] mx-auto">
         <Editor />
         <Preview />
       </section>

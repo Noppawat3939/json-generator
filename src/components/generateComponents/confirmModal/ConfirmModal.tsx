@@ -24,16 +24,18 @@ const ConfirmModal = () => {
     action: { handleGenerateJson, resetLimit, onLimitChange },
   } = useGenerateJson();
 
+  const openingConfirmModal = open === "confirmModal";
+
   const handleOnOpenChange = () => {
-    onOpenChange(open === "confirmModal" ? null : "confirmModal");
+    onOpenChange(openingConfirmModal ? null : "confirmModal");
     resetLimit();
   };
 
-  if (open !== "confirmModal") return null;
+  if (!openingConfirmModal) return null;
 
   return (
     <Modal
-      isOpen={open === "confirmModal"}
+      isOpen={openingConfirmModal}
       isDismissable={false}
       onOpenChange={handleOnOpenChange}
     >

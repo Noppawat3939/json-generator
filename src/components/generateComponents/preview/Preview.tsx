@@ -39,7 +39,7 @@ const Preview = () => {
         <span className="p-2">
           <textarea
             readOnly
-            className="bg-black  text-foreground-600 leading-7 focus-within:hidden bg-transparent w-full resize-none border-hidden h-[500px]"
+            className="bg-black leading-7 focus-within:hidden bg-transparent w-full resize-none border-hidden h-[500px]"
             value={jsonFormatted}
           />
         </span>

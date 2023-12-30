@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Switch,
 } from "@nextui-org/react";
 import React from "react";
 import { IoCopyOutline, IoCheckmarkDoneOutline } from "react-icons/io5";
@@ -21,43 +22,72 @@ const ReactJson = loadable(() => import("react-json-view"));
 
 const GeneratedJsonModal = () => {
   const {
-    action: { handleCloseModal, handleSelectedTab, handleCopyClipboard },
-    state: { openModal, objectData, jsonInterface, selectedTab, isCopied },
+    action: {
+      handleCloseModal,
+      handleSelectedTab,
+      handleCopyClipboard,
+      handleToggleShowId,
+    },
+    state: {
+      openModal,
+      objectData,
+      jsonInterface,
+      selectedTab,
+      isCopied,
+      isShowIdObject,
+    },
   } = useGenerateCompleted();
 
   const { theme } = useTheme();
 
   const isLightTheme = theme === "light";
+  const openingGeneratedModal = openModal === "generatedJsonModal";
 
   const isSelectedJson = selectedTab === "jsonData";
 
-  if (openModal !== "generatedJsonModal") return null;
+  if (!openingGeneratedModal) return null;
 
   return (
     <Modal
       size="3xl"
       hideCloseButton
       isDismissable={false}
-      isOpen={openModal === "generatedJsonModal"}
+      isOpen={openingGeneratedModal}
     >
       <ModalContent>
         <ModalHeader className="flex justify-between items-center">
           <h1 className="text-xl text-foreground-500">
             {isSelectedJson ? "Result JSON data" : "Result JSON type"}
           </h1>
-          <Button
-            isIconOnly
-            aria-label="copy-json-btn"
-            size="sm"
-            variant={isLightTheme ? "bordered" : "solid"}
-            onClick={isCopied ? undefined : handleCopyClipboard}
-          >
-            {isCopied ? (
-              <IoCheckmarkDoneOutline className="w-5 h-5 text-green-400" />
-            ) : (
-              <IoCopyOutline className="w-4 h-4" />
-            )}
-          </Button>
+          <div className="flex">
+            <span className="flex items-center space-x-1">
+              <label htmlFor="switch" className="text-[10px] font-medium">
+                Show ID
+              </label>
+              <Switch
+                isDisabled={!isSelectedJson}
+                isSelected={isShowIdObject}
+                size="sm"
+                onValueChange={handleToggleShowId}
+                color="warning"
+                aria-label="switch-render-id"
+                className="disabled:cursor-not-allowed"
+              />
+            </span>
+            <Button
+              isIconOnly
+              aria-label="copy-json-btn"
+              size="sm"
+              variant={isLightTheme ? "bordered" : "solid"}
+              onClick={isCopied ? undefined : handleCopyClipboard}
+            >
+              {isCopied ? (
+                <IoCheckmarkDoneOutline className="w-5 h-5 text-green-400" />
+              ) : (
+                <IoCopyOutline className="w-4 h-4" />
+              )}
+            </Button>
+          </div>
         </ModalHeader>
         <ModalBody className="py-0">
           <section className="py-2 max-h-[360px] overflow-y-scroll">
@@ -73,6 +103,7 @@ const GeneratedJsonModal = () => {
                 displayObjectSize={false}
                 displayDataTypes={false}
                 quotesOnKeys={false}
+                name="data"
                 iconStyle="circle"
                 //@ts-ignore
                 displayArrayKey={false}

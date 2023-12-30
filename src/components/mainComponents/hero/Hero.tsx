@@ -23,7 +23,7 @@ const Hero = () => {
         <Button
           as={Link}
           size="md"
-          variant="light"
+          variant="ghost"
           className="font-medium"
           href="/generate"
         >

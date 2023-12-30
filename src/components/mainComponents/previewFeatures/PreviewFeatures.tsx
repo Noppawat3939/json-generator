@@ -44,7 +44,7 @@ const PreviewFeatures = () => {
           <Image
             src={f.image}
             alt={f.key}
-            className="w-[85%] mx-auto shadow-sm rounded mt-2"
+            className="w-[85%] mx-auto shadow-sm rounded-lg mt-2"
           />
         </div>
       ))}
