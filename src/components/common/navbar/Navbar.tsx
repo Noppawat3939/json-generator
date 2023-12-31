@@ -45,7 +45,7 @@ const Navbar = () => {
             </Button>
           </span>
         )}
-        {/* {shouldHideMenu &&
+        {shouldHideMenu &&
           menus.map((menu) => (
             <a
               key={menu.key}
@@ -59,7 +59,7 @@ const Navbar = () => {
             >
               {menu.label}
             </a>
-          ))} */}
+          ))}
       </div>
 
       <Button
