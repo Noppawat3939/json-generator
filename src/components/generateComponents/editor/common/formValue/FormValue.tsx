@@ -1,25 +1,10 @@
-import { TypeOption } from "@/types";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { BiPlus } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
+import type { FormValueProps as Props } from "./formValueType";
 
-type FormValueProps = {
-  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  selectOptions: {
-    key: TypeOption;
-    label: string;
-  }[];
-  onRemove: (removedId: string) => void;
-  id: string;
-  name: string;
-  dataType: TypeOption;
-  isShowAddSubValue: boolean;
-  onAddSubValue: (id: string, key: string, dataType: TypeOption) => void;
-};
-
-const FormValue: FC<FormValueProps> = ({
+const FormValue: FC<Props> = ({
   selectOptions,
   onSelectChange,
   onRemove,

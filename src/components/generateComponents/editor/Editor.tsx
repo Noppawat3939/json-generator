@@ -17,12 +17,16 @@ const EXPAND_LENGTH = { MIN: 1, MAX: 3 } as const;
 const Editor = () => {
   const {
     store,
-    onAddField,
-    onRemoveField,
-    onSelectChange,
-    subFields,
+    action: {
+      onAddField,
+      onRemoveField,
+      onSelectChange,
+      onAddSubField,
+      onRemoveSubField,
+      onExpandSubValue,
+    },
     inputProps,
-    expand,
+    state: { expandSubValue },
   } = useHandleEditor();
 
   const isDisabled = isEmpty(store.values);
@@ -53,16 +57,12 @@ const Editor = () => {
           ].includes(item.dataType as TypeOption);
 
           const onAddSubValue = () =>
-            subFields.onAddSubField(
-              item.id,
-              item.key,
-              item.dataType as TypeOption
-            );
+            onAddSubField(item.id, item.key, item.dataType as TypeOption);
 
           const expandSubValues =
             isArray(item.value) &&
             item.value.length > EXPAND_LENGTH.MAX &&
-            expand.state.includes(item.id)
+            expandSubValue.includes(item.id)
               ? item.value
               : undefined;
 
@@ -100,11 +100,11 @@ const Editor = () => {
                           aria-label="expand-sub-value-btn"
                           className="mr-[4px] transition-all ease-in-out duration-200"
                           radius="full"
-                          onClick={() => expand.onExpandSubValue(item.id)}
+                          onClick={() => onExpandSubValue(item.id)}
                         >
                           <HiOutlineChevronRight
                             className={`${
-                              expand.state?.includes(item.id)
+                              expandSubValue?.includes(item.id)
                                 ? "rotate-90 transition-all duration-400"
                                 : "rotate-0"
                             }`}
@@ -119,7 +119,7 @@ const Editor = () => {
                       item={item}
                       indexValue={valIdx}
                       subValue={subVal}
-                      onRemoveSubValue={subFields.onRemoveSubField}
+                      onRemoveSubValue={onRemoveSubField}
                     />
                   </div>
                 ))}

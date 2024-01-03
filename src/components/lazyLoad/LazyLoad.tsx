@@ -1,13 +1,10 @@
 "use client";
 
 import { Spinner } from "@nextui-org/react";
-import React, { FC, Suspense } from "react";
+import React, { type FC, Suspense } from "react";
+import type { LazyLoadProps as Props } from "./lazyLoadType";
 
-type LazyLoadProps = {
-  children: React.ReactElement;
-};
-
-const LazyLoad: FC<LazyLoadProps> = ({ children }) => {
+const LazyLoad: FC<Props> = ({ children }) => {
   return <Suspense fallback={<Spinner color="warning" />}>{children}</Suspense>;
 };
 

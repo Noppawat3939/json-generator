@@ -1,9 +1,8 @@
 import React, { type FC } from "react";
-import { Highlight, type PrismTheme } from "prism-react-renderer";
+import { Highlight } from "prism-react-renderer";
+import type { HighLightProps as Props } from "./hightlightType";
 
-type HighLightProps = { code: string; theme: PrismTheme };
-
-const HighLight: FC<HighLightProps> = ({ code, theme }) => {
+const HighLight: FC<Props> = ({ code, theme }) => {
   return (
     <Highlight language="tsx" code={code} theme={theme}>
       {({ tokens, getLineProps, getTokenProps }) => (

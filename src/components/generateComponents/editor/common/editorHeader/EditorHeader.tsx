@@ -1,21 +1,12 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FiRefreshCw } from "react-icons/fi";
+import type { EditorHeaderProps as Props } from "./editorHeaderType";
 
-type EditorHeaderProps = {
-  onAddField: () => void;
-  onReset: () => void;
-  isDisabled: boolean;
-};
-
-const EditorHeader: FC<EditorHeaderProps> = ({
-  onAddField,
-  onReset,
-  isDisabled,
-}) => {
+const EditorHeader: FC<Props> = ({ onAddField, onReset, isDisabled }) => {
   return (
     <React.Fragment>
       <span className="flex">

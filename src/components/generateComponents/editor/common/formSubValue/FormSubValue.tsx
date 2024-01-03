@@ -1,24 +1,13 @@
 "use client";
 
-import { ObjectJsonValues, TypeOption } from "@/types";
+import type { TypeOption } from "@/types";
 import { Button, Input, Tooltip } from "@nextui-org/react";
 import { isArray } from "lodash";
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { MdDeleteOutline } from "react-icons/md";
+import type { FormSubValueProps as Props } from "./formSubValueType";
 
-type FormSubValueProps = {
-  item: ObjectJsonValues;
-  onRemoveSubValue: (
-    removedId: string,
-    type: TypeOption,
-    index: number
-  ) => void;
-  indexValue: number;
-  subValue: any;
-  expandLen: { max: number; min: number };
-};
-
-const FormSubValue: FC<FormSubValueProps> = ({
+const FormSubValue: FC<Props> = ({
   item,
   onRemoveSubValue,
   indexValue,

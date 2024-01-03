@@ -160,13 +160,17 @@ const useHandleEditor = () => {
   };
 
   return {
-    onAddField,
-    onRemoveField,
+    action: {
+      onAddField,
+      onRemoveField,
+      onSelectChange: onDataTypeChange,
+      onAddSubField,
+      onRemoveSubField,
+      onExpandSubValue,
+    },
     inputProps: { onKeyChange },
-    onSelectChange: onDataTypeChange,
-    subFields: { onAddSubField, onRemoveSubField },
     store: { values, resetValues },
-    expand: { state: expandSubValue, onExpandSubValue },
+    state: { expandSubValue },
   };
 };
 
